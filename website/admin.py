@@ -12,7 +12,6 @@ class PostAdmin(admin.ModelAdmin):
 # admin.site.register(Post , PostAdmin)
     
 
-
 @admin.register(Contact)
 class ContactAdmin(admin.ModelAdmin):
     list_display = ['name' , 'email' , 'created_at']

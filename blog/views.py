@@ -1,7 +1,6 @@
 from django.shortcuts import render , get_object_or_404
 from .models import Post
-from datetime import  datetime
-
+from django.utils import timezone
 
 def Counter(pid):
         post = get_object_or_404(Post,id=pid)
@@ -10,8 +9,8 @@ def Counter(pid):
 
 
 def LoadBlogSingle(request , pid):
-    post = get_object_or_404(Post,id=pid)
     Counter(pid)
+    post = get_object_or_404(Post,id=pid ,status = 1)
     context = {'post' : post}
     return render(request, 'blog/single.html' ,context)
 
@@ -20,7 +19,7 @@ def LoadBlogSingle(request , pid):
 
 
 def LoadBlog(request):
-    posts = Post.objects.exclude(publish_at__gt = datetime.today()).exclude(status = 0)
+    posts = Post.objects.exclude(publish_at__gt = timezone.now()).exclude(status = 0)
     context = {'posts' : posts}
     return render(request, 'blog/blog.html' , context)
 

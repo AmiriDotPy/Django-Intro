@@ -1,9 +1,17 @@
-from django.shortcuts import render
+from django.shortcuts import render , get_object_or_404
+from .models import Post
+from datetime import  datetime
 
-def LoadBlogSingle(request):
-    return render(request, 'blog/single.html')
+def LoadBlogSingle(request , pid):
+    post = get_object_or_404(Post,id=pid)
+    post.counted_view += 1
+    post.save()
+    context = {'post' : post}
+    return render(request, 'blog/single.html' ,context)
 
 
 def LoadBlog(request):
-    return render(request, 'blog/blog.html')
+    posts = Post.objects.exclude(publish_at__gt = datetime.today()).exclude(status = 0)
+    context = {'posts' : posts}
+    return render(request, 'blog/blog.html' , context)
 

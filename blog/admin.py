@@ -6,7 +6,7 @@ from .models import *
 
 @admin.register(Post)
 class PostAdmin(admin.ModelAdmin):
-    list_display = ['title' , 'created_at' , 'updated_at' , 'publish_at']
-    list_filter = ['created_at']
+    list_display = ['title' ,'author', 'created_at' , 'updated_at' , 'publish_at']
+    list_filter = ['created_at' , 'author']
 
 # admin.site.register(Post , PostAdmin)

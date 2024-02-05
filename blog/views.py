@@ -2,6 +2,7 @@ from django.shortcuts import render , get_object_or_404
 from .models import Post
 from django.utils import timezone
 
+
 def Counter(pid):
     post = get_object_or_404(Post.objects.exclude(publish_at__gt = timezone.now()).exclude(status = 0),id=pid)
     post.counted_view += 1

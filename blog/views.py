@@ -1,7 +1,7 @@
 from django.shortcuts import render , get_object_or_404
 from .models import Post
 from django.utils import timezone
-from django.views.generic import ListView
+from django.core.paginator import Paginator
 
 
 
@@ -15,7 +15,12 @@ def Counter(pid):
 def LoadBlogSingle(request , pid):
     Counter(pid)
     post = get_object_or_404(Post.objects.exclude(publish_at__gt = timezone.now()).exclude(status = 0),id=pid)
-    context = {'post' : post}
+
+    paginator = Paginator(post, 1)
+    pageNumber = request.Get.get("page")
+    pageObject = paginator.get_page(pageNumber)
+
+    context = {'post' : post , 'paginator' : pageObject}
     return render(request, 'blog/single.html' ,context)
 
 
@@ -24,3 +29,12 @@ def LoadBlog(request):
     context = {'posts' : posts}
     return render(request, 'blog/blog.html' , context)
 
+
+def NextPostInSingle(request , pid):
+    post = get_object_or_404(Post.objects.exclude(publish_at__gt = timezone.now()).exclude(status = 0),id=pid)
+    context = Paginator(post, 1)
+
+    pageNumber = request.Get.get("page")
+    pageObject = context.get_page(pageNumber)
+    return render(request , 'blog/single.html' , {'pagnaitor' : pageObject})
+ 

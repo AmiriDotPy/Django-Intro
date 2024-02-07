@@ -15,12 +15,9 @@ def Counter(pid):
 def LoadBlogSingle(request , pid):
     Counter(pid)
     post = get_object_or_404(Post.objects.exclude(publish_at__gt = timezone.now()).exclude(status = 0),id=pid)
-
-    paginator = Paginator(post, 1)
-    pageNumber = request.Get.get("page")
-    pageObject = paginator.get_page(pageNumber)
-
-    context = {'post' : post , 'paginator' : pageObject}
+    nextPost = get_object_or_404(Post.objects.exclude(publish_at__gt = timezone.now()).exclude(status = 0),id=pid + 1)
+    previousPost = get_object_or_404(Post.objects.exclude(publish_at__gt = timezone.now()).exclude(status = 0),id=pid - 1)
+    context = {'post' : post , 'nextpost' : nextPost , 'previouspost' : previousPost}
     return render(request, 'blog/single.html' ,context)
 
 
@@ -30,11 +27,5 @@ def LoadBlog(request):
     return render(request, 'blog/blog.html' , context)
 
 
-def NextPostInSingle(request , pid):
-    post = get_object_or_404(Post.objects.exclude(publish_at__gt = timezone.now()).exclude(status = 0),id=pid)
-    context = Paginator(post, 1)
 
-    pageNumber = request.Get.get("page")
-    pageObject = context.get_page(pageNumber)
-    return render(request , 'blog/single.html' , {'pagnaitor' : pageObject})
  

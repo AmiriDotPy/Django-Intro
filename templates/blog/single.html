@@ -72,7 +72,7 @@
 								</div>
 								<div class="detials">
 									<p>Previous Post</p>
-									<a href="#">
+									<a href="{% url "blog:single" pid=nextpost.id %}">
 										<h4>{{previouspost.title}}</h4>
 									</a>
 								</div>
@@ -83,7 +83,7 @@
 								class="col-lg-6 col-md-6 col-12 nav-right flex-row d-flex justify-content-end align-items-center">
 								<div class="detials">
 									<p>Next Post</p>
-									<a href="#">
+									<a href="{% url "blog:single" pid=nextpost.id %}">
 										<h4>{{nextpost.title}}</h4>
 									</a>
 								</div>

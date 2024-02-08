@@ -1,5 +1,10 @@
 from django.shortcuts import render 
 from django.utils import timezone
+from .models import Post
+from django.http import Http404
+
+
+
 
 
 
@@ -16,11 +21,14 @@ def PreviousPost(pid):
 
 
 def LoadBlogSingle(request , pid):
-    Counter(pid)
-    post = Post.objects.filter(publish_at__lt = timezone.now(), status = 1 , id = pid).first()
-    nextPost = NextPost(pid)
-    previousPost =PreviousPost(pid)
-    context = {'post' : post , 'nextpost' : nextPost , 'previouspost' : previousPost}
+    try:
+        Counter(pid)
+        post = Post.objects.filter(publish_at__lt = timezone.now(), status = 1 , id = pid).first()
+        nextPost = NextPost(pid)
+        previousPost =PreviousPost(pid)
+        context = {'post' : post , 'nextpost' : nextPost , 'previouspost' : previousPost}
+    except Post.DoesNotExist:
+        raise Http404('page not found')
     return render(request, 'blog/single.html' ,context)
 
 

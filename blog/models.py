@@ -26,3 +26,6 @@ class Post(models.Model):
     post_categorys = models.ManyToManyField(Category)
     post_tags = models.ManyToManyField(Tag)
 
+    def snippets(self):
+        return self.content[:100] + '...'
+

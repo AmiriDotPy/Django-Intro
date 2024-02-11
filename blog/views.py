@@ -1,7 +1,6 @@
 from django.shortcuts import render ,get_object_or_404
 from django.utils import timezone
-from .models import Post
-from django.http import Http404
+from .models import Post , Tag
 
 
 
@@ -20,13 +19,14 @@ def LoadBlogSingle(request , pid):
     post = get_object_or_404(Post.objects.exclude(publish_at__gt = timezone.now()), status = 1,id=pid)
     nextPost = Post.objects.filter(publish_at__lt = timezone.now(), status = 1 , id__gt = pid).first()
     previousPost = Post.objects.filter(publish_at__lt = timezone.now(), status = 1 , id__lt = pid).last()
-    context = {'post' : post ,'nextpost' : nextPost , 'previouspost' : previousPost}
+    context = {'post' : post ,'nextpost' : nextPost , 'previouspost' : previousPost }
     return render(request, 'blog/single.html' ,context)
 
 
 def LoadBlog(request):
+    tags = Tag.objects.all()
     posts = Post.objects.filter(publish_at__lt = timezone.now(), status = 1)
-    context = {'posts' : posts}
+    context = {'posts' : posts , 'tags' : tags}
     return render(request, 'blog/blog.html' , context)
 
 

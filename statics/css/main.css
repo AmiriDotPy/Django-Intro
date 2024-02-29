@@ -3658,6 +3658,7 @@ body.mobile-nav-active #mobile-nav-toggle {
   width: 100%;
 }
 .single-post-list.d-flex.flex-row.align-items-center .thumb .img-fluid {
+  width: 100%;
   max-width: 100px;
 }
 

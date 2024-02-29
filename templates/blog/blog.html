@@ -129,25 +129,49 @@
 
 					<nav class="blog-pagination justify-content-center d-flex">
 						<ul class="pagination">
+							{% if posts.has_previous %}
+							<li class="page-item"><a href="?page=1" class="page-link">First Page</a></li>
+							{%elif posts.number == 1%}
+							<li class="page-item active"><a href="?page=1" class="page-link">
+								<span aria-hidden="true">
+									First Page<span class="lnr lnr-chevron-right"></span>
+								</span>
+							</a></li>
+							{%endif%}
+							{% if posts.has_previous %}
 							<li class="page-item">
-								<a href="#" class="page-link" aria-label="Previous">
+								<a href="?page={{posts.previous_page_number}}" class="page-link" aria-label="Previous">
 									<span aria-hidden="true">
-										<span class="lnr lnr-chevron-left"></span>
+										<span class="lnr lnr-chevron-left"></span>Previous Page
 									</span>
 								</a>
 							</li>
-							<li class="page-item"><a href="#" class="page-link">01</a></li>
-							<li class="page-item active"><a href="#" class="page-link">02</a></li>
-							<li class="page-item"><a href="#" class="page-link">03</a></li>
-							<li class="page-item"><a href="#" class="page-link">04</a></li>
-							<li class="page-item"><a href="#" class="page-link">09</a></li>
+							{%endif%}
+							{%for page in posts.paginator.page_range %}
+							{%if posts.number == page%}
+							<li class="page-item active"><a href="?page={{page}}" class="page-link">{{page}}</a></li>
+							{%else%}
+							<li class="page-item"><a href="?page={{page}}" class="page-link">{{page}}</a></li>
+							{%endif%}
+							{%endfor%}
+							{% if posts.has_next %}
+							<li class="page-item"><a href="?page={{posts.paginator.num_pages}}" class="page-link">End Page</a></li>
+							{%elif posts.number == posts.paginator.num_pages%}
+							<li class="page-item active"><a href="?page={{posts.paginator.num_pages}}" class="page-link">
+								<span aria-hidden="true">
+									<span class="lnr lnr-chevron-left"></span>End Page
+								</span>
+							</a></li>
+							{%endif%}
+							{% if posts.has_next %}
 							<li class="page-item">
-								<a href="#" class="page-link" aria-label="Next">
+								<a href="?page={{posts.next_page_number}}" class="page-link" aria-label="Next">
 									<span aria-hidden="true">
-										<span class="lnr lnr-chevron-right"></span>
+										Next Page<span class="lnr lnr-chevron-right"></span>
 									</span>
 								</a>
 							</li>
+							{%endif%}
 						</ul>
 					</nav>
 
@@ -155,14 +179,14 @@
 				</div>
 				<div class="col-lg-4 sidebar-widgets">
 					<div class="widget-wrap">
-						<div class="single-sidebar-widget search-widget">
+						<!-- <div class="single-sidebar-widget search-widget">
 							<form class="search-form" action="#">
 								<input placeholder="Search Posts" name="search" type="text"
 									onfocus="this.placeholder = ''" onblur="this.placeholder = 'Search Posts'">
 								<button type="submit"><i class="fa fa-search"></i></button>
 							</form>
-						</div>
-
+						</div> -->
+							{% include 'blog/blog-search.html '%}	
 							{% include 'blog/blog-writer.html '%}	
 							{% LatestPosts 4 %}
 							{% PopularPosts 4 %}

@@ -23,3 +23,8 @@ def PostCategory():
     for name in categoreis:
         cat_dict[name] = posts.filter(post_categorys = name).count()
     return {'categoreis' : cat_dict}
+
+@register.inclusion_tag('website/website-latest-posts.html')
+def MainPageLatestPosts(arg = 2):
+    posts = Post.objects.filter(status = 1).order_by('publish_at')[:arg]
+    return {'posts' : posts}

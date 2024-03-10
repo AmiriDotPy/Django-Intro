@@ -1,5 +1,6 @@
 from django import template
 from blog.models import Post , Category
+from django.utils import timezone
 register = template.Library()
 
 
@@ -26,5 +27,5 @@ def PostCategory():
 
 @register.inclusion_tag('website/website-latest-posts.html')
 def MainPageLatestPosts(arg = 2):
-    posts = Post.objects.filter(status = 1).order_by('publish_at')[:arg]
+    posts = Post.objects.filter(publish_at__lt = timezone.now(),status = 1).order_by('publish_at')[:arg]
     return {'posts' : posts}
